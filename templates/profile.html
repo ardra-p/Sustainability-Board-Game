@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ username }}'s Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .profile-container {
+            width: 80%;
+            margin: 30px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-right: 20px;
+            border: 3px solid #4CAF50;
+        }
+
+        .header h2 {
+            margin: 0;
+        }
+
+        .tabs {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid #4CAF50;
+            color: #000;
+        }
+
+        .tab-content {
+            margin-top: 20px;
+        }
+
+        .progress-container {
+            background: #eee;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+            height: 24px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #4CAF50;
+            color: #fff;
+            text-align: center;
+            line-height: 24px;
+            font-size: 14px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            padding: 6px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .btn-eco {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-eco:hover {
+            background: #45a049;
+        }
+
+        .section-title {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="profile-container">
+    <!-- Header -->
+    <div class="header">
+        <img src="{{ url_for('static', filename='avatar.jpg') }}" alt="Profile Picture" class="avatar">
+        <div>
+            <h2> {{ username }}</h2>
+            <p><strong>Total Points:</strong> {{ points }}</p>
+        </div>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+            <div style="margin-top:20px;">
+        <a href="{{ url_for('game') }}"><button class="btn-eco">Back to Game</button></a>
+        <a href="{{ url_for('logout') }}"><button class="btn-eco">Logout</button></a>
+    </div>
+    
+    </div> <br>
+                    <h3 class="section-title">Profile Status</h3>
+            {% if completed %}
+                <div class="progress-container">
+                    <div class="progress-bar" style="width:100%">100% Completed </div>
+                </div>
+            {% else %}
+                <div class="progress-container">
+                    <div class="progress-bar" style="width:50%">50% Incomplete </div>
+                </div>
+            {% endif %}
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <div class="tab active">Basic Details</div>
+    </div>
+     <br> 
+    <!-- Content -->
+    <div class="tab-content">
+
+        <!-- Basic Details -->
+        <div >
+            <h3 class="section-title" >Profile Information</h3>
+            <form method="POST">
+                <label for="input">Your Interests</label> <br>
+                <input type="text" name="interest" placeholder="Your Interests"
+                       value="{{ profile[0] if profile else '' }}" required style="height: 50px; font-size:20px;"><br><br>
+                <label for="input">Your Background</label>
+                <input type="text" name="background" placeholder="Your Background"
+                       value="{{ profile[1] if profile else '' }}" required style="height: 50px; font-size:20px;"><br><br>
+                <button type="submit" class="btn-eco">Edit Profile</button>
+            </form>
+
+
+        </div>
+        <br> <br>
+        <!-- History Section -->
+        <div>
+            <h3 class="section-title">Recent Activities</h3>
+            <ul>
+                {% for task, time in tasks %}
+                    <li>✔ {{ task }} - <small>{{ time }}</small></li>
+                {% else %}
+                    <li>No tasks completed yet</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <br> <br>
+        <!-- Achievements -->
+        <div>
+            <h3 class="section-title">Achievements</h3>
+            <p>No Achievements</p>
+        </div>
+    </div>
+    <br> <br>
+    <!-- Buttons -->
+
+</div>
+
+</body>
+</html>

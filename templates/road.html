@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sustainability Road</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background: linear-gradient(to bottom, #e6ffe6, #ccffcc);
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #2d572c;
+        }
+
+        h2, h3 { color: #1b4d1b; }
+
+        /* ---------------- NAVBAR ---------------- */
+        .navbar {
+            background: #2d572c;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+        .navbar h1 {
+            font-size: 1.5rem;
+            margin: 0;
+            color: #a5f3a1;
+        }
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+        .nav-links a {
+            text-decoration: none;
+        }
+        .nav-links button {
+            background: #4CAF50;
+            border: none;
+            padding: 8px 15px;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: bold;
+        }
+        .nav-links button:hover {
+            background: #388E3C;
+        }
+
+        /* ---------------- ROAD ---------------- */
+        .road {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 90%;
+            margin: 40px auto;
+            position: relative;
+        }
+        .road::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            height: 12px;
+            width: 100%;
+            background: #2d572c;
+            border-radius: 6px;
+            z-index: 0;
+        }
+        .task {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #fff;
+            border: 4px solid #2d572c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+            transition: 0.3s;
+            font-weight: bold;
+            color: #2d572c;
+            text-align: center;
+            padding: 10px;
+        }
+        .task.submitted {
+            background: #4CAF50;
+            color: #fff;
+        }
+        .task:hover {
+            transform: scale(1.1);
+            background: #d9ffd9;
+        }
+
+        /* ---------------- TASK DETAILS ---------------- */
+        .details-container {
+            width: 60%;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 12px;
+            background: #f9fff9;
+            border: 2px solid #4CAF50;
+            display: none;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            text-align: left;
+        }
+        .details-container.active {
+            display: block;
+        }
+        .details-container h4 {
+            color: #2d572c;
+        }
+        button {
+            background: #4CAF50;
+            border: none;
+            padding: 10px 15px;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover {
+            background: #388E3C;
+        }
+
+        /* ---------------- CARBON INFO ---------------- */
+        .carbon-info {
+            margin-top: 40px;
+            padding: 20px;
+            width: 70%;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 12px;
+            background: #e8f5e9;
+             border: 2px solid #2d572c; 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        .quote-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .quote-box {
+            background: #ffffff;
+            border: 2px solid #2d572c;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, background 0.3s;
+        }
+        .quote-box:hover {
+            transform: scale(1.05);
+            background: #f0fff0;
+        }
+        .quote-box p {
+            font-style: italic;
+            color: #70d077;
+            margin-bottom: 10px;
+        }
+        .quote-box span {
+            font-weight: bold;
+            color: #83c483;
+        }
+
+        /* Carbon footprint */
+.carbon-value {
+    background: #7aa77a;
+    color: #fff;
+    width: 60%;
+    margin: 30px auto 50px auto; /* bigger bottom margin for gap */
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 12px rgba(0,0,0,0.3);
+}
+
+.carbon-value h2 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+.carbon-value p {
+    margin: 10px 0 0;
+    font-size: 3rem;
+    font-weight: bold;
+    color: #a5f3a1;
+}
+
+/* Quotes Section */
+.quote-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 quotes in a row */
+    gap: 30px;
+    margin: 0 auto 50px auto;
+    width: 90%;
+}
+
+.quote-card {
+    background: #ffffff;
+    border: 3px solid #4CAF50;  /* solid border */
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    transition: transform 0.3s, box-shadow 0.3s;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.quote-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+}
+
+.quote-card p {
+    font-size: 1.2rem;
+    color: #2d572c;
+    margin-bottom: 12px;
+    font-style: italic;
+    line-height: 1.5;
+}
+
+.quote-card span {
+    font-weight: bold;
+    color: #388E3C;
+    text-align: right;
+    display: block;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 900px) {
+    .quote-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <h1>🌱 Sustainability Game</h1>
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}"><button>Home</button></a>
+            <a href="{{ url_for('profile') }}"><button>Profile</button></a>
+            <a href="{{ url_for('logout') }}"><button>Logout</button></a>
+        </div>
+    </div>
+
+<h2>Hello, {{ name }}! 🌱 Points: {{ points }}</h2>
+<h3>Level {{ level }}</h3>
+<h4>You can submit {{ max_submit - submitted|length }} more task(s) today.</h4>
+
+<!-- Navigation -->
+<div style="margin:20px;">
+    {% if level > 1 %}
+        <a href="{{ url_for('game', level=level-1) }}"><button>⬅ Previous Level</button></a>
+    {% endif %}
+
+    {% if level < unlocked_levels %}
+        <a href="{{ url_for('game', level=level+1) }}"><button>Next Level ➡</button></a>
+    {% else %}
+        {% if level == 1 %}
+            <p>🔒 Earn 100 points in Level 1 to unlock Level 2</p>
+        {% endif %}
+    {% endif %}
+</div>
+
+
+    <!-- Road -->
+    <div class="road">
+        {% for task in tasks %}
+        <div class="task {% if task.id in submitted %}submitted{% endif %}" 
+             onclick="openTask('{{ task.id }}')">
+            {{ task.title }}
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Task details -->
+    {% for task in tasks %}
+    <div class="details-container" id="details-{{ task.id }}">
+        <h4>{{ task.title }}</h4>
+        <p>{{ task.details }}</p>
+
+        {% if task.id not in submitted and submitted|length < max_submit %}
+        <form method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="task_id" value="{{ task.id }}">
+            <label>Upload image:</label><br>
+            <input type="file" name="image" accept="image/*" required><br><br>
+            <label>Description:</label><br>
+            <textarea name="description" required></textarea><br><br>
+            <button type="submit">Submit Task</button>
+        </form>
+        {% elif task.id in submitted %}
+        <p>✅ Task already submitted</p>
+        {% else %}
+        <p>⛔ Daily limit reached</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+
+    <!-- Carbon footprint -->
+    <div class="carbon-value">
+        <h2>🌍 CO₂ Reduced</h2>
+        <p><strong>{{ submitted|length * 2.5 }} kg</strong></p>
+    </div>
+<br> <br> <br> <br>
+    <!-- Quotes 
+    <div class="carbon-info">
+        <h3>💡 Sustainability Quotes</h3>
+        <div class="quote-grid">
+            <div class="quote-box"><p>“The greatest threat to our planet is the belief that someone else will save it.”</p><span>– Robert Swan</span></div>
+            <div class="quote-box"><p>“Small acts, when multiplied by millions of people, can transform the world.”</p><span>– Howard Zinn</span></div>
+            <div class="quote-box"><p>“There is no such thing as ‘away’. When we throw anything away it must go somewhere.”</p><span>– Annie Leonard</span></div>
+            <div class="quote-box"><p>“What we save, saves us.”</p><span>– Anonymous</span></div>
+            <div class="quote-box"><p>“He who plants a tree, plants a hope.”</p><span>– Lucy Larcom</span></div>
+            <div class="quote-box"><p>“The Earth is what we all have in common.”</p><span>– Wendell Berry</span></div>
+        </div>
+    </div> -->
+    <div class="carbon-info">
+        <h2>Sustainability Quotes</h2>
+<div class="quote-section">
+    <div class="quote-card">
+        <p>“The greatest threat to our planet is the belief that someone else will save it.”</p>
+        <span>– Robert Swan</span>
+    </div>
+    <div class="quote-card">
+        <p>“Small acts, when multiplied by millions of people, can transform the world.”</p>
+        <span>– Howard Zinn</span>
+    </div>
+    <div class="quote-card">
+        <p>“There is no such thing as ‘away’. When we throw anything away it must go somewhere.”</p>
+        <span>– Annie Leonard</span>
+    </div>
+    <div class="quote-card">
+        <p>“What we save, saves us.”</p>
+        <span>– Anonymous</span>
+    </div>
+    <div class="quote-card">
+        <p>“He who plants a tree, plants a hope.”</p>
+        <span>– Lucy Larcom</span>
+    </div>
+    <div class="quote-card">
+        <p>“The Earth is what we all have in common.”</p>
+        <span>– Wendell Berry</span>
+    </div>
+</div>
+
+    </div>
+
+    <script>
+        function openTask(id) {
+            document.querySelectorAll(".details-container").forEach(d => d.classList.remove("active"));
+            document.getElementById("details-" + id).classList.add("active");
+        }
+        document.addEventListener("click", function(e) {
+            if (!e.target.closest(".task") && !e.target.closest(".details-container")) {
+                document.querySelectorAll(".details-container").forEach(d => d.classList.remove("active"));
+            }
+        });
+    </script>
+</body>
+</html>
